@@ -155,6 +155,7 @@ const LiveAudioVisualizer: (props: Props) => ReactElement = ({
       ref={canvasRef}
       width={width}
       height={height}
+      // className="border border-gray-300 rounded-lg shadow-md bg-gray-100"
       style={{
         aspectRatio: "unset",
       }}
