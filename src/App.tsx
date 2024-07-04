@@ -1,25 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import { useState } from 'react';
+import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
+import {LiveAudioVisualizer} from "./component/LiveAudioVisualizer";
+import {AudioVisualizer} from "./component/AudioVisualizer";
 
-function App() {
+function App(){
+  const [blob, setBlob] = useState<Blob>();
+  const recorder = useAudioRecorder();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <AudioRecorder
+            onRecordingComplete={setBlob}
+            recorderControls={recorder}
+        />
+
+        {recorder.mediaRecorder && (
+            <LiveAudioVisualizer
+                mediaRecorder={recorder.mediaRecorder}
+                width={200}
+                height={75}
+                fftSize={8192}
+                gap={1}
+                maxDecibels={-10}
+                minDecibels={-80}
+                smoothingTimeConstant={0.4}
+            />
+        )}
+
+        {blob && (
+            <AudioVisualizer
+                blob={blob}
+                width={500}
+                height={75}
+                barWidth={1}
+                gap={0}
+                barColor={'#f76565'}
+            />
+        )}
+
+        {blob && (
+            <AudioVisualizer
+                blob={blob}
+                width={500}
+                height={75}
+                barWidth={3}
+                gap={0}
+                barColor={'lightblue'}
+            />
+        )}
+      </div>
   );
 }
 
